@@ -20,7 +20,8 @@ return new class extends Migration
                 $table->string('address')->nullable();
                 $table->dateTime('birthday')->nullable();
                 $table->string('image')->nullable();
-                $table->tinyInteger('role')->default(0);
+                $table->tinyInteger('role')->default(0)->comment('0 la client, 1 admin');
+                $table->tinyInteger('active')->default(0)->comment('0 la inactive, 1 active');
                 $table->text('description')->nullable();
                 $table->text('user_agent')->nullable();
                 $table->text('ip')->nullable();

@@ -21,7 +21,7 @@ Route::get('/', function () {
 });
 Route::get('/home', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::middleware('guest')->group(function() {
     Route::get('login', [AuthController::class, 'index']);
@@ -32,9 +32,15 @@ Route::middleware('auth')->group(function() {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
+//Route ADMIN
 Route::prefix('admin')->name('admin')->as('admin.')->middleware('auth', 'adminAccess')->group(function() {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('user/index', [UserController::class, 'index'])->name('user.index');
+
+    Route::prefix('user')->name('user')->as('user.')->group(function() {
+        Route::get('index', [UserController::class, 'index'])->name('index');
+        Route::get('create', [UserController::class, 'create'])->name('create');
+
+    });
     
 });
 

@@ -24,11 +24,11 @@ class AuthController extends Controller
         $credentials = [
             'email' => $request->email,
             'password' => $request->password,
-            // 'active' => 1,
+            // 'publish' => 1,
         ];
  
         if (Auth::attempt($credentials)) {
-            if (Auth()->user()->active == 1){
+            if (Auth()->user()->publish == 1){
                 $request->session()->regenerate();
                 if (Auth()->user()->role == 1){
                     return redirect()->route('admin.dashboard')->with('success', 'Đăng nhập thành công');
@@ -36,7 +36,7 @@ class AuthController extends Controller
                 if (Auth()->user()->role != 1){
                     return redirect()->route('home')->with('success', 'Đăng nhập thành công');
                 }
-            } else { //active =0 thi logout
+            } else { //publish =0 thi logout
                 Auth::guard('web')->logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();

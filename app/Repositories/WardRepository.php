@@ -2,19 +2,20 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Models\Ward;
+use App\Repositories\Interfaces\WardRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+class WardRepository extends BaseRepository implements WardRepositoryInterface
 {
-    private User $user;
-    public function __construct(User $user)
+    protected $model;
+    
+    public function __construct(Ward $model)
     {
-        $this->user = $user;
+        $this->model = $model;
     }
 
-    public function getAllPaginate()
+    public function findWardByDistrictId($district_id)
     {
-        return $this->user->paginate(15);
+        return $this->model->where('district_code', '=', $district_id)->get();
     }
 }

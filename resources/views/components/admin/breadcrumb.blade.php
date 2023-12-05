@@ -3,13 +3,13 @@
         <h2>{{ $title }}</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="{{route($route1)}}">Dashboard</a>
+                <a href="{{$route1}}">Dashboard</a>
             </li>
             <li class="">
-                <a href="{{route($route2)}}">{{$name2}}</></a>
+                <a href="{{$route2}}">{{$name2}}</></a>
             </li>
             <li class="active">
-                <a href="{{route($route3)}}"><strong>{{$name3}}</strong></strong></a>
+                <a href="{{$route3}}"><strong>{{$name3}}</strong></a>
             </li>
         </ol>
     </div>

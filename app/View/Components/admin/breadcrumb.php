@@ -15,19 +15,19 @@ class breadcrumb extends Component
     public $route1;
     public $route2;
     public $route3;
-    public $name1;
     public $name2;
     public $name3;
-    public function __construct($title=null, $name1=null, $name2=null, $name3=null, 
-                                $route1=null, $route2=null, $route3=null)
+    public $id;
+    public function __construct($title=null, $name2=null, $name3=null, 
+                                $route1=null, $route2=null, $route3=null, $id=null)
     {
         $this->title = $title;
-        $this->name1 = $name1;
         $this->name2 = $name2;
         $this->name3 = $name3;
         $this->route1 = $route1;
         $this->route2 = $route2;
         $this->route3 = $route3;
+        $this->id = $id;
     }
 
     /**

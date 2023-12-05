@@ -10,5 +10,10 @@ class Province extends Model
     use HasFactory;
 
     protected $table = 'provinces';
-    
+    protected $primaryKey = 'code';
+    public $incrementing = false;
+
+    public function districts (){
+        return $this->hasMany(District::class, 'province_code', $this->primaryKey);
+    }
 }

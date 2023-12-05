@@ -2,19 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Models\Province;
+use App\Repositories\Interfaces\ProvinceRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+class ProvinceRepository extends BaseRepository implements ProvinceRepositoryInterface
 {
-    private User $user;
-    public function __construct(User $user)
+    protected $model;
+    
+    public function __construct(Province $model)
     {
-        $this->user = $user;
+        $this->model = $model;
     }
 
-    public function getAllPaginate()
-    {
-        return $this->user->paginate(15);
-    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface UserRepositoryInterface
+interface ProvinceRepositoryInterface
 {
-    public function getAllPaginate();
+    public function getAll();
 }

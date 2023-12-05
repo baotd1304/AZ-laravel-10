@@ -1,7 +1,6 @@
-@extends('admin.component.layout')
+@extends('admin.component.layoutDashboard')
 
 @section('content')
-<div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
@@ -412,7 +411,6 @@
 
         </div>
     </div>
-</div>
 
 @endsection
 

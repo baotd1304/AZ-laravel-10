@@ -2,19 +2,21 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Models\District;
+use App\Repositories\Interfaces\DistrictRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+class DistrictRepository extends BaseRepository implements DistrictRepositoryInterface
 {
-    private User $user;
-    public function __construct(User $user)
+    protected $model;
+    
+    public function __construct(District $model)
     {
-        $this->user = $user;
+        $this->model = $model;
     }
 
-    public function getAllPaginate()
+    public function findDistrictByProvinceId($province_id)
     {
-        return $this->user->paginate(15);
+        return $this->model->with('province')->get();
     }
+
 }

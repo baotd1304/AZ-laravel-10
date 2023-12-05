@@ -8,5 +8,5 @@
 <script src="{{ asset('admin/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 
 {{-- Customize JS --}}
-<script src="{{ asset('admin/js/customize.js')}}"></script>
+<script src="{{ asset('admin/customize/js/customize.js')}}"></script>
 

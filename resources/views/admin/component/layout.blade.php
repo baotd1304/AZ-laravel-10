@@ -12,15 +12,19 @@
         @include('admin.component.sidebar')
 
         <div id="page-wrapper" class="gray-bg">
+            
             @include('admin.component.nav')
-        <div class="wrapper wrapper-content">
 
-        @yield('content')
-        
+            {{-- <div class="wrapper wrapper-content"> --}}
+
+                @yield('content')
+            
+            {{-- </div> --}}
+
             @include('admin.component.footer')
+            
+            @include('admin.component.rightsidebar')
         </div>
-        
-        @include('admin.component.rightsidebar')
     </div>
 
     @include('admin.component.script')

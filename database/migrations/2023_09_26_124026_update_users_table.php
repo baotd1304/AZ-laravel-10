@@ -20,7 +20,8 @@ return new class extends Migration
                 $table->string('address')->nullable();
                 $table->dateTime('birthday')->nullable();
                 $table->string('image')->nullable();
-                $table->tinyInteger('role')->default(0);
+                $table->tinyInteger('role')->default(0)->comment('0 la client, 1 admin');
+                $table->tinyInteger('publish')->default(1)->comment('1 publish, 2 unpublish');
                 $table->text('description')->nullable();
                 $table->text('user_agent')->nullable();
                 $table->text('ip')->nullable();
@@ -34,6 +35,19 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('phone');
+            $table->dropColumn('province_id');
+            $table->dropColumn('district_id');
+            $table->dropColumn('ward_id');
+            $table->dropColumn('address');
+            $table->dropColumn('birthday');
+            $table->dropColumn('image');
+            $table->dropColumn('role');
+            $table->dropColumn('active');
+            $table->dropColumn('description');
+            $table->dropColumn('user_agent');
+            $table->dropColumn('ip');
+        });
     }
 };

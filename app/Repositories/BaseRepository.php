@@ -19,18 +19,29 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->all();
     }
     public function pagination(
-        $column=['*'], $condition=[], 
+        $column=['*'], $condition=[],
         $join=[], $extend=[], $perPage=0
     ){
-        $query = $this->model->select($column)->where(function($que) use ($condition, $column){
-            if (isset($condition['keyword']) && !empty($condition['keyword'])) {
-                if (isset($column)){
-                    foreach ($column as $key => $field){ //lap qua cac field da chon tu ham` paginateSelect o UserService
-                        $que->orWhere($field, 'LIKE', '%'.$condition['keyword'].'%');
-                    };
-                }
-            };
-        });
+        $query = $this->model->select($column)
+            ->where(function($que) use ($condition){
+                if (isset($condition['publish'])) {
+                    $que->Where('publish', '=', $condition['publish']);
+                };
+            })
+            ->where(function($que) use ($condition){
+                if (isset($condition['user_catalogue_id'])) {
+                    $que->Where('user_catalogue_id', '=', $condition['user_catalogue_id']);
+                };
+            })
+            ->where(function($que) use ($condition, $column){
+                if (isset($condition['keyword']) && !empty($condition['keyword'])) {
+                    if (isset($column)){
+                        foreach ($column as $key => $field){ //lap qua cac field da chon tu ham` paginateSelect o UserService
+                            $que->orWhere($field, 'LIKE', '%'.$condition['keyword'].'%');
+                        };
+                    }
+                };
+            });
         if (!empty($join)){
             $query->join(...$join);
         }
@@ -50,8 +61,16 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->findById($id)->update($payLoad);
     }
+    public function updateByWhereIn($whereInField = '', $whereIn= [], $payLoad=[])
+    {
+        return $this->model->whereIn($whereInField, $whereIn)->update($payLoad);
+    }
     public function delete($id)
     {
         return $this->findById($id)->delete();
+    }
+    public function deleteChecked($id=[])
+    {
+        return $this->model->whereIn('id', $id)->delete();
     }
 }

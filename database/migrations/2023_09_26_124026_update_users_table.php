@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->dateTime('birthday')->nullable();
                 $table->string('image')->nullable();
                 $table->tinyInteger('role')->default(0)->comment('0 la client, 1 admin');
-                $table->tinyInteger('publish')->default(0)->comment('0 la inactive, 1 active');
+                $table->tinyInteger('publish')->default(1)->comment('1 publish, 2 unpublish');
                 $table->text('description')->nullable();
                 $table->text('user_agent')->nullable();
                 $table->text('ip')->nullable();

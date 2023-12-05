@@ -55,13 +55,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @php
-                                $userCatalogue = [
-                                    '[Chọn nhóm thành viên]',
-                                    'Quản trị viên',
-                                    'Cộng tác viên'
-                                ];
-                            @endphp
+                           
                             <div class="row mb15">
                                 <div class="col-lg-6">
                                     <div class="form-row">
@@ -69,11 +63,12 @@
                                             <span class="text-danger">(*)</span>
                                         </label>
                                         <select name="user_catalogue_id"  class="form-control @error('user_catalogue_id') is-invalid @enderror">
-                                            @foreach ($userCatalogue as $key => $item)
+                                            <option value="">Chọn nhóm thành viên</option>
+                                            @foreach ($userCatalogues as $userCatalogue)
                                                 <option 
-                                                    @if(old('user_catalogue_id', ($user->user_catalogue_id)?? '') == $key) selected @endif 
-                                                    value="{{$key}}">
-                                                    {{$item}}
+                                                    @if(old('user_catalogue_id', ($user->user_catalogue_id)?? '') == $userCatalogue->id) selected @endif 
+                                                    value="{{$userCatalogue->id}}">
+                                                    {{$userCatalogue->name}}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -159,8 +154,8 @@
                                         <select name="province_id" class="form-control setupSelect2 provinces location" data-target="districts" >
                                             <option value="0">[Chọn tỉnh/thành phố]</option>
                                             @foreach ($provinces as $province)
-                                                <option 
-                                                    @if (old('province_id', ($user->province_id)?? '') == $key) selected @endif
+                                                <option
+                                                    @if (old('province_id', ($user->province_id)?? '') == $province->code) selected @endif
                                                     value="{{$province->code}}">{{$province->name}}
                                                 </option>
                                             @endforeach

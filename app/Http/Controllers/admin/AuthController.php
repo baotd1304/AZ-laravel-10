@@ -36,7 +36,7 @@ class AuthController extends Controller
                 if (Auth()->user()->role != 1){
                     return redirect()->route('home')->with('success', 'Đăng nhập thành công');
                 }
-            } else { //publish =0 thi logout
+            } else { //publish !=1 thi logout
                 Auth::guard('web')->logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();

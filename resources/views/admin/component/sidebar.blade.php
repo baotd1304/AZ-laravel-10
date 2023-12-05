@@ -35,8 +35,8 @@
             <li class="{{ request()->is('*/user/*') ? 'active':''}}">
                 <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">QL Thành Viên</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li>
-                        <a href="index.html">QL Nhóm Thành Viên</a>
+                    <li class="{{url()->current() == route('admin.user_catalogue.index')?'active':''}}">
+                        <a href="{{route('admin.user_catalogue.index')}}">QL Nhóm Thành Viên</a>
                     </li>
                     <li class="{{url()->current() == route('admin.user.index')?'active':''}}">
                         <a href="{{route('admin.user.index')}}">QL Thành Viên</a>

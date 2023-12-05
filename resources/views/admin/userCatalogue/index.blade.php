@@ -7,12 +7,12 @@
 
 @section('content')
 
-    <x-admin.breadcrumb title="Quản lý thành viên"
-        name2="Thành viên"
-        name3="Danh sách thành viên"
+    <x-admin.breadcrumb title="Quản lý nhóm thành viên"
+        name2="Nhóm thành viên"
+        name3="Danh sách"
         route1="admin.dashboard"
-        route2="admin.user.index"
-        route3="admin.user.index"
+        route2="admin.userCatalogue.index"
+        route3="admin.userCatalogue.index"
         />
     {{-- <div class="wrapper wrapper-content"> --}}
         
@@ -31,13 +31,10 @@
                                     <i class="fa fa-wrench"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="#" id="changeStatusAll" class="changeStatusAll" data-model="User" data-value="1" data-field="publish">Publish đã chọn</a>
+                                    <li><a href="#" id="changeStatusAll" class="changeStatusAll" data-model="UserCatalogue" data-value="1" data-field="publish">Publish thành viên</a>
                                     </li>
-                                    <li><a href="#" class="changeStatusAll" data-model="User" data-value="2" data-field="publish">Unpublish đã chọn</a>
+                                    <li><a href="#" class="changeStatusAll" data-model="UserCatalogue" data-value="2" data-field="publish">Unpublish thành viên</a>
                                     </li>
-                                    <li><a href="#" class="deleteChecked" data-model="User" data-value="delete" data-field="deleted_at">Xóa đã chọn</a>
-                                    </li>
-
                                 </ul>
                                 <a class="close-link">
                                     <i class="fa fa-times"></i>
@@ -46,7 +43,7 @@
                         </div>
                         <div class="ibox-content">
                             {{-- Filter wrapper --}}
-                            <form action="{{route('admin.user.index')}}">
+                            <form action="{{route('admin.user_catalogue.index')}}">
                                 <div class="filter-wrapper">
                                     <div class="uk-flex uk-flex-middle uk-flex-space-between">
                                         <div class="perPage">
@@ -63,17 +60,7 @@
                                         </div>
                                         <div class="action">
                                             <div class="uk-flex uk-flex-middle">
-                                                <div class="uk-search uk-flex uk-flex-middle mr5">
-                                                        @php
-                                                            $user_catalogue_id = request('user_catalogue_id')?? old('user_catalogue_id');
-                                                        @endphp
-                                                    <select name="user_catalogue_id" id="" class="form-control setupSelect2">
-                                                        <option value="" {{$user_catalogue_id==''? 'selected':''}}>Chọn nhóm thành viên</option>
-                                                        @foreach ($userCatalogues as $userCatalogue)
-                                                            <option value="{{$userCatalogue->id}}" {{$user_catalogue_id==$userCatalogue->id? 'selected':''}}>{{$userCatalogue->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                                
                                                 <div class="uk-search uk-flex uk-flex-middle mr5">
                                                     <select name="publish" id="" class="form-control setupSelect2">
                                                         @php
@@ -97,7 +84,7 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <a href="{{route('admin.user.create')}}" class="btn btn-primary"><i class="fa fa-plus">Thêm mới thành viên</i></a>
+                                                <a href="{{route('admin.user_catalogue.create')}}" class="btn btn-primary"><i class="fa fa-plus">Thêm mới nhóm thành viên</i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -112,44 +99,33 @@
                                             <input type="checkbox" id="checkAll" class="checkAll">
                                         </th>
                                         <th>ID</th>
-                                        <th>Họ tên</th>
+                                        <th>Tên nhóm</th>
                                         <th>Hình ảnh</th>
-                                        <th>Email</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Nhóm thành viên</th>
                                         <th class="text-center">Tình trạng</th>
                                         <th class="text-center">Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
+                                    @foreach ($userCatalogues as $userCatalogue)
                                         <tr>
                                             <td>
-                                                <input type="checkbox" value="{{$user->id}}" id="checkbox{{$user->id}}" class="input-checkbox">
+                                                <input type="checkbox" value="{{$userCatalogue->id}}" id="checkbox{{$userCatalogue->id}}" class="input-checkbox">
                                             </td>
-                                            <td>{{$user->id}}</td>
+                                            <td>{{$userCatalogue->id}}</td>
                                             <td>
-                                                <div class="user-item">{{$user->name}}</div>
+                                                <div class="user-item">{{$userCatalogue->name}}</div>
                                             </td>
                                             <td>
-                                                <div class="user-item"><img src="{{$user->image}}" alt="" width="50px"></div>
+                                                <div class="user-item"><img src="{{$userCatalogue->image}}" alt="" width="50px"></div>
                                             </td>
-                                            <td>{{$user->email}}</td>
-                                            <td>{{$user->phone}}</td>
-                                            <td>
-                                                @if ($user->user_catalogue_id==1) Quản trị viên
-                                                @elseif ($user->user_catalogue_id==2) Cộng tác viên
-                                                @else Khách hàng
-                                                @endif
-                                            </td>
-                                            <td class="text-center js-switch-{{$user->id}}">
-                                                <input type="checkbox" class="js-switch status" data-field="publish" data-id={{$user->id}} data-model="User" value="{{$user->publish}}"
-                                                {{$user->publish==1? 'checked':''}}>
+                                            <td class="text-center js-switch-{{$userCatalogue->id}}">
+                                                <input type="checkbox" class="js-switch status" data-field="publish" data-id={{$userCatalogue->id}} data-model="UserCatalogue" value="{{$userCatalogue->publish}}"
+                                                {{$userCatalogue->publish==1? 'checked':''}}>
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{route('admin.user.edit', $user->id)}}" class="btn btn-success"><i class="fa fa-edit"></i></a>
-                                                <button data-toggle="modal" data-target="#confirmDeleteModal{{$user->id}}"
-                                                    data-id={{$user->id}}
+                                                <a href="{{route('admin.user_catalogue.edit', $userCatalogue->id)}}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                                                <button data-toggle="modal" data-target="#confirmDeleteModal{{$userCatalogue->id}}"
+                                                    data-id={{$userCatalogue->id}}
                                                     class="btn btn-danger confirmDelete"><i class="fa fa-trash"></i></button>
                                             </td>
                                             
@@ -160,7 +136,7 @@
                                 </tbody>
                             </table>
                             
-                            {{ $users->links('pagination::bootstrap-4')}}
+                            {{ $userCatalogues->links('pagination::bootstrap-4')}}
 
                         </div>
                     </div>

@@ -7,6 +7,7 @@ use App\Http\Requests\admin\StoreUserRequest;
 use App\Http\Requests\admin\UpdateUserRequest;
 use App\Services\Interfaces\UserServiceInterface as UserService;
 use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
+use App\Repositories\Interfaces\UserCatalogueRepositoryInterface as UserCatalogueRepository;
 use App\Repositories\Interfaces\ProvinceRepositoryInterface as ProvinceRepository;
 use Illuminate\Http\Request;
 
@@ -14,32 +15,37 @@ class UserController extends Controller
 {
     protected $userService;
     protected $userRepository;
+    protected $userCatalogueRepository;
     protected $provinceRepository;
 
     public function __construct(
         UserService $userService,
         UserRepository $userRepository,
+        UserCatalogueRepository $userCatalogueRepository,
         ProvinceRepository $provinceRepository,
     ){
         $this->userService = $userService;
         $this->userRepository = $userRepository;
+        $this->userCatalogueRepository = $userCatalogueRepository;
         $this->provinceRepository = $provinceRepository;
     }
     public function index(Request $request)
     {
         $users = $this->userService->pagination($request);
-        $provinces = $this->provinceRepository->getAll();
+        $userCatalogues = $this->userCatalogueRepository->getAll();
         return view('admin.user.index', compact(
             'users',
-            'provinces'
+            'userCatalogues'
         ));
     }
     
     public function create()
     {
         $provinces = $this->provinceRepository->getAll();
+        $userCatalogues = $this->userCatalogueRepository->getAll();
         return view('admin.user.store', compact(
-            'provinces'
+            'provinces',
+            'userCatalogues',
         ));
     }
 

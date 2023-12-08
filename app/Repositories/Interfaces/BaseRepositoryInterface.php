@@ -13,7 +13,7 @@ interface BaseRepositoryInterface
     public function deleteChecked($id=[]);
     public function pagination(
         $column=['*'], $condition=[], 
-        $join=[], $extend=[], $perPage
+        $join=[], $extend=[], $perPage,
     );
 
 }

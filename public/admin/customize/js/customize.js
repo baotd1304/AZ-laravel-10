@@ -18,11 +18,14 @@
     //confirm delete model
     HT.confirmDelete = () => {
         $('.confirmDelete').click(function() {
+            let id = $(this).data('id');
             let option = {
-                'id' : $(this).data('id'),
-                'url': $(this).data('id'),
+                'id' : id,
+                'url': id,
+                'type': 'DELETE',
                 '_token' : _token
             }
+
             sweetConfirm(option);
         })
     }
@@ -43,6 +46,7 @@
                 'field' : _this.attr('data-field'),
                 'id' : id,
                 'url': '/delete-checked',
+                'type': 'DELETE',
                 '_token' : _token,
             }
             sweetConfirm(option);
@@ -50,6 +54,12 @@
     }
 
     function sweetConfirm(option){
+        var action = (option.type == 'DELETE') ? 'xóa' : 'thay đổi';
+        if (!Array.isArray(option.id)){
+            var lengthId = Array.of(option.id).length;
+        } else {
+            var lengthId = option.id.length;
+        }
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: "btn btn-danger",
@@ -58,18 +68,18 @@
             buttonsStyling: false
           });
           swalWithBootstrapButtons.fire({
-            title: "Bạn chắc chắn muốn xóa dữ liệu của "+option.id.length+ " bản ghi hay không?",
+            title: "Bạn chắc chắn muốn "+ action +" dữ liệu của "+lengthId+ " bản ghi hay không?",
             text: "Mã ID: "+option.id,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "XÓA",
+            confirmButtonText: "ĐỒNG Ý",
             cancelButtonText: "HỦY",
             reverseButtons: true
           }).then((result) => {
             if (result.isConfirmed) {
                 // Gửi yêu cầu xóa khi người dùng xác nhận
                 $.ajax({
-                    type: 'DELETE',
+                    type: option.type,
                     url:  option.url,
                     data: option,
                     dataType: 'json',
@@ -90,6 +100,7 @@
                             text: 'Đã xảy ra lỗi khi xóa.',
                             icon: 'error'
                         });
+                        // location.reload();
                     }
                 });
             } else if (
@@ -98,9 +109,10 @@
                 ) {
                 swalWithBootstrapButtons.fire({
                     title: "Đã hủy!",
-                    text: "Dữ liệu chưa bị xóa",
+                    text: "Dữ liệu chưa bị "+action,
                     icon: "error"
                 });
+                location.reload();
             }
         });
     }
@@ -117,7 +129,7 @@
             HT.updateBackgroundColor();
         })
         $(".input-checkbox").change(function() {
-            // Kiểm tra xem tất cả các checkbox có được chọn không để cập nhật trạng thái của "Check All"
+            //kiem tra trang thai cua cac input-checkbox de tbhay doi trang thai cua checkall
             if ($(".input-checkbox:checked").length === $(".input-checkbox").length) {
                 $(".checkAll").prop("checked", true);
             } else {
@@ -145,8 +157,11 @@
                 'id' : _this.attr('data-id'),
                 'model' : _this.attr('data-model'),
                 'field' : _this.attr('data-field'),
+                'type' : 'POST',
+                'url' : '/change-status',
                 '_token' : _token
             }
+            // sweetConfirm(option);
             $.ajax({
                 url: '/change-status',
                 type: 'POST',
@@ -155,15 +170,17 @@
                 success: function(res){
                     console.log(res);
                     // Hiển thị SweetAlert2 Mixin
-                    sweetSuccessMixin(res)
+                    sweetSuccessMixin(res);
                 },
                 error: function(jqXHR, textStatus, errorThrown){
                     console.log('Lỗi: ' + textStatus + ' ' + errorThrown);
-                    sweetErrorMixin()
+                    var error = textStatus + ' ' + errorThrown;
+                    sweetErrorMixin(error);
                 }
             })
         })
     }
+    
     function sweetSuccessMixin (res){
         const Toast = Swal.mixin({
             toast: true,
@@ -182,10 +199,21 @@
             text: res.message,
         });
     }
-    function sweetErrorMixin (){
+    function sweetErrorMixin (error){
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
         Toast.fire({
             title: 'Lỗi!',
-            text: 'Đã xảy ra lỗi.',
+            text: 'Đã xảy ra lỗi: '+error,
             icon: 'error',
         });
     }
@@ -204,6 +232,7 @@
                 'value' : _this.attr('data-value'),
                 'model' : _this.attr('data-model'),
                 'field' : _this.attr('data-field'),
+                'column': 'id',
                 'id' : id,
                 '_token' : _token,
             }
@@ -229,16 +258,48 @@
                         }
                     }
                     // Hiển thị SweetAlert2 Mixin
-                    sweetSuccessMixin(res)
+                    sweetSuccessMixin(res);
                 },
                 error: function(jqXHR, textStatus, errorThrown){
                     console.log('Lỗi: ' + textStatus + ' ' + errorThrown);
-                    sweetErrorMixin()
+                    sweetErrorMixin();
                 }
             })
         })
     }
     
+    HT.changeFieldSelect = () => {
+        $('.fieldSelect').change(function(){
+            let _this = $(this)
+            let option = {
+                'id' : _this.data('id'),
+                'model' : _this.data('model'),
+                'field' : _this.data('field'),
+                'value' : _this.val(),
+                'url' : '/change-field-select',
+                'type' : 'POST',
+                '_token' : _token,
+            }
+            console.log(option)
+            // sweetConfirm(option);
+            $.ajax({
+                url: option.url,
+                type: option.type,
+                data: option,
+                dataType: 'json',
+                success: function(res){
+                    console.log(res);
+                    // Hiển thị SweetAlert2 Mixin
+                    sweetSuccessMixin(res);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log('Lỗi: ' + textStatus + ' ' + errorThrown);
+                    var error = textStatus + ' ' + errorThrown;
+                    sweetErrorMixin(error);
+                }
+            })
+        })
+    }
 
 
 
@@ -250,6 +311,7 @@
         HT.changeStatus();
         HT.changeStatusAll();
         HT.deleteChecked();
+        HT.changeFieldSelect();
     });
 
     

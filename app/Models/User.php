@@ -56,4 +56,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function user_catalogue()
+    {
+        return $this->belongsTo(UserCatalogue::class, 'user_catalogue_id');
+    }
+
 }

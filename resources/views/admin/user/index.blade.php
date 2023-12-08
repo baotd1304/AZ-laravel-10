@@ -9,7 +9,7 @@
 
     <x-admin.breadcrumb title="Quản lý thành viên"
         name2="Thành viên"
-        name3="Danh sách thành viên"
+        name3="Danh sách"
         route1="admin.dashboard"
         route2="admin.user.index"
         route3="admin.user.index"
@@ -21,89 +21,13 @@
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         
-                        <div class="ibox-title">
-                            <h5>{{ config('apps.user.tableHeading') }}</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-wrench"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="#" id="changeStatusAll" class="changeStatusAll" data-model="User" data-value="1" data-field="publish">Publish đã chọn</a>
-                                    </li>
-                                    <li><a href="#" class="changeStatusAll" data-model="User" data-value="2" data-field="publish">Unpublish đã chọn</a>
-                                    </li>
-                                    <li><a href="#" class="deleteChecked" data-model="User" data-value="delete" data-field="deleted_at">Xóa đã chọn</a>
-                                    </li>
-
-                                </ul>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div>
-                        </div>
+                        <x-admin.toolbox tableHeading="Danh sách thành viên" model="User"/>
+                        
                         <div class="ibox-content">
                             {{-- Filter wrapper --}}
-                            <form action="{{route('admin.user.index')}}">
-                                <div class="filter-wrapper">
-                                    <div class="uk-flex uk-flex-middle uk-flex-space-between">
-                                        <div class="perPage">
-                                            <div class="uk-flex uk-flex-middle uk-flex-space-between">
-                                                <select name="per_page" class="form-control input-sm perPage filter-wrapper mr10" id="">
-                                                    @php
-                                                        $perPage = request('per_page')?? old('per_page');
-                                                    @endphp
-                                                    @for ($i = 20; $i<=200;$i+=20)
-                                                        <option {{($perPage == $i)? 'selected':'' }} value="{{$i}}">{{$i}} bản ghi</option>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="action">
-                                            <div class="uk-flex uk-flex-middle">
-                                                <div class="uk-search uk-flex uk-flex-middle mr5">
-                                                        @php
-                                                            $user_catalogue_id = request('user_catalogue_id')?? old('user_catalogue_id');
-                                                        @endphp
-                                                    <select name="user_catalogue_id" id="" class="form-control setupSelect2">
-                                                        <option value="" {{$user_catalogue_id==''? 'selected':''}}>Chọn nhóm thành viên</option>
-                                                        @foreach ($userCatalogues as $userCatalogue)
-                                                            <option value="{{$userCatalogue->id}}" {{$user_catalogue_id==$userCatalogue->id? 'selected':''}}>{{$userCatalogue->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="uk-search uk-flex uk-flex-middle mr5">
-                                                    <select name="publish" id="" class="form-control setupSelect2">
-                                                        @php
-                                                            $publishs = [
-                                                                'Bị khóa',
-                                                                'Hoạt động',
-                                                            ];
-                                                            $publish = request('publish')?? old('publish');
-                                                        @endphp
-                                                            <option {{($publish == '')? 'selected':'' }} value="">Chọn tình trạng</option>
-                                                            <option {{($publish == 1)? 'selected':'' }} value="1">Hoạt động</option>
-                                                            <option {{($publish == 2)? 'selected':'' }} value="2">Bị khóa</option>
-                                                    </select>
-                                                </div>
-                                                <div class="uk-search uk-flex uk-flex-middle mr5">
-                                                    <div class="input-group">
-                                                        <input type="text" name="keyword" value="{{ request('keyword')?? old('keyword') }}"
-                                                        placeholder="Nhập từ khóa bạn tìm kiếm..." class="form-control">
-                                                        <span class="input-group-btn">
-                                                            <button type="submit" name="search" value="search" class="btn btn-success btn-sm">Tìm kiếm</button>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <a href="{{route('admin.user.create')}}" class="btn btn-primary"><i class="fa fa-plus">Thêm mới thành viên</i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            <x-admin.filter-wrapper :userCatalogues="$userCatalogues" route="user"/>
                             {{-- End filter wrapper --}}
+                            {{ $users->links('pagination::customize-view')}}
 
                             <table id="user_table" class="table table-striped table-hover table-bordered">
                                 <thead>
@@ -113,10 +37,10 @@
                                         </th>
                                         <th>ID</th>
                                         <th>Họ tên</th>
-                                        <th>Hình ảnh</th>
+                                        <th class="text-center">Hình ảnh</th>
                                         <th>Email</th>
                                         <th>Số điện thoại</th>
-                                        <th>Nhóm thành viên</th>
+                                        <th class="text-center">Nhóm thành viên</th>
                                         <th class="text-center">Tình trạng</th>
                                         <th class="text-center">Hành động</th>
                                     </tr>
@@ -132,15 +56,18 @@
                                                 <div class="user-item">{{$user->name}}</div>
                                             </td>
                                             <td>
-                                                <div class="user-item"><img src="{{$user->image}}" alt="" width="50px"></div>
+                                                <div class="text-center"><img src="{{$user->image}}" alt="" width="50px"></div>
                                             </td>
                                             <td>{{$user->email}}</td>
                                             <td>{{$user->phone}}</td>
-                                            <td>
-                                                @if ($user->user_catalogue_id==1) Quản trị viên
-                                                @elseif ($user->user_catalogue_id==2) Cộng tác viên
-                                                @else Khách hàng
-                                                @endif
+                                            <td class="text-center col-lg-2">
+                                                <select name="user_catalogue_id" class="form-control fieldSelect" data-id={{$user->id}} data-model="User" data-field="user_catalogue_id">
+                                                    @foreach ($userCatalogues as $userCatalogue)
+                                                        <option {{$user->user_catalogue_id == $userCatalogue->id ? 'selected' : ''}}
+                                                            value="{{$userCatalogue->id}}">{{$userCatalogue->name}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </td>
                                             <td class="text-center js-switch-{{$user->id}}">
                                                 <input type="checkbox" class="js-switch status" data-field="publish" data-id={{$user->id}} data-model="User" value="{{$user->publish}}"
@@ -160,7 +87,7 @@
                                 </tbody>
                             </table>
                             
-                            {{ $users->links('pagination::bootstrap-4')}}
+                            {{ $users->links('pagination::customize-view')}}
 
                         </div>
                     </div>

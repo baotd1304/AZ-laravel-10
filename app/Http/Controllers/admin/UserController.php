@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\StoreUserRequest;
 use App\Http\Requests\admin\UpdateUserRequest;
+use App\Models\User;
 use App\Services\Interfaces\UserServiceInterface as UserService;
 use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
 use App\Repositories\Interfaces\UserCatalogueRepositoryInterface as UserCatalogueRepository;
@@ -60,11 +61,13 @@ class UserController extends Controller
     public function edit($id)
     {
         $provinces = $this->provinceRepository->getAll();
+        $userCatalogues = $this->userCatalogueRepository->getAll();
         $user = $this->userRepository->findById($id);
         // dd($user);
         return view('admin.user.store', compact(
             'provinces',
-            'user'
+            'user',
+            'userCatalogues',
         ));
     }
 

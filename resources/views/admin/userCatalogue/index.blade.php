@@ -20,77 +20,14 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
-                        
-                        <div class="ibox-title">
-                            <h5>{{ config('apps.user.tableHeading') }}</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-wrench"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="#" id="changeStatusAll" class="changeStatusAll" data-model="UserCatalogue" data-value="1" data-field="publish">Publish thành viên</a>
-                                    </li>
-                                    <li><a href="#" class="changeStatusAll" data-model="UserCatalogue" data-value="2" data-field="publish">Unpublish thành viên</a>
-                                    </li>
-                                </ul>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div>
-                        </div>
+                        <x-admin.toolbox tableHeading="Danh sách nhóm thành viên" model="UserCatalogue"/>
+
                         <div class="ibox-content">
                             {{-- Filter wrapper --}}
-                            <form action="{{route('admin.user_catalogue.index')}}">
-                                <div class="filter-wrapper">
-                                    <div class="uk-flex uk-flex-middle uk-flex-space-between">
-                                        <div class="perPage">
-                                            <div class="uk-flex uk-flex-middle uk-flex-space-between">
-                                                <select name="per_page" class="form-control input-sm perPage filter-wrapper mr10" id="">
-                                                    @php
-                                                        $perPage = request('per_page')?? old('per_page');
-                                                    @endphp
-                                                    @for ($i = 20; $i<=200;$i+=20)
-                                                        <option {{($perPage == $i)? 'selected':'' }} value="{{$i}}">{{$i}} bản ghi</option>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="action">
-                                            <div class="uk-flex uk-flex-middle">
-                                                
-                                                <div class="uk-search uk-flex uk-flex-middle mr5">
-                                                    <select name="publish" id="" class="form-control setupSelect2">
-                                                        @php
-                                                            $publishs = [
-                                                                'Bị khóa',
-                                                                'Hoạt động',
-                                                            ];
-                                                            $publish = request('publish')?? old('publish');
-                                                        @endphp
-                                                            <option {{($publish == '')? 'selected':'' }} value="">Chọn tình trạng</option>
-                                                            <option {{($publish == 1)? 'selected':'' }} value="1">Hoạt động</option>
-                                                            <option {{($publish == 2)? 'selected':'' }} value="2">Bị khóa</option>
-                                                    </select>
-                                                </div>
-                                                <div class="uk-search uk-flex uk-flex-middle mr5">
-                                                    <div class="input-group">
-                                                        <input type="text" name="keyword" value="{{ request('keyword')?? old('keyword') }}"
-                                                        placeholder="Nhập từ khóa bạn tìm kiếm..." class="form-control">
-                                                        <span class="input-group-btn">
-                                                            <button type="submit" name="search" value="search" class="btn btn-success btn-sm">Tìm kiếm</button>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <a href="{{route('admin.user_catalogue.create')}}" class="btn btn-primary"><i class="fa fa-plus">Thêm mới nhóm thành viên</i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            
+                            <x-admin.filter-wrapper route="user_catalogue"/>
                             {{-- End filter wrapper --}}
+                            {{ $userCatalogues->links('pagination::customize-view')}}
 
                             <table id="user_table" class="table table-striped table-hover table-bordered">
                                 <thead>
@@ -100,7 +37,8 @@
                                         </th>
                                         <th>ID</th>
                                         <th>Tên nhóm</th>
-                                        <th>Hình ảnh</th>
+                                        <th class="text-center col-lg-2">Số lượng thành viên</th>
+                                        <th class="text-center">Hình ảnh</th>
                                         <th class="text-center">Tình trạng</th>
                                         <th class="text-center">Hành động</th>
                                     </tr>
@@ -115,8 +53,11 @@
                                             <td>
                                                 <div class="user-item">{{$userCatalogue->name}}</div>
                                             </td>
+                                            <td class="text-center">
+                                                {{count($userCatalogue->users)}}
+                                            </td>
                                             <td>
-                                                <div class="user-item"><img src="{{$userCatalogue->image}}" alt="" width="50px"></div>
+                                                <div class="text-center"><img src="{{$userCatalogue->image}}" alt="" width="50px"></div>
                                             </td>
                                             <td class="text-center js-switch-{{$userCatalogue->id}}">
                                                 <input type="checkbox" class="js-switch status" data-field="publish" data-id={{$userCatalogue->id}} data-model="UserCatalogue" value="{{$userCatalogue->publish}}"
@@ -136,7 +77,7 @@
                                 </tbody>
                             </table>
                             
-                            {{ $userCatalogues->links('pagination::bootstrap-4')}}
+                            {{ $userCatalogues->links('pagination::customize-view')}}
 
                         </div>
                     </div>

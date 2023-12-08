@@ -62,4 +62,5 @@ Route::get('get-location', [LocationController::class, 'getLocation'])->name('ge
 Route::post('change-status', [AjaxController::class, 'changeStatus'])->name('change-status');
 Route::post('change-status-all', [AjaxController::class, 'changeStatusAll'])->name('change-status-all');
 Route::delete('delete-checked', [AjaxController::class, 'deleteChecked'])->name('delete-checked');
+Route::post('change-field-select', [AjaxController::class, 'changeFieldSelect'])->name('change-field-select');
 

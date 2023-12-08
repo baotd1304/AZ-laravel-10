@@ -32,14 +32,26 @@
             <li class="{{url()->current() == route('admin.dashboard')?'active':''}}">
                 <a href="{{route('admin.dashboard')}}"><i class="fa fa-diamond"></i> <span class="nav-label">Dashboard</span></a>
             </li>
-            <li class="{{ request()->is('*/user/*') ? 'active':''}}">
+            {{-- @dd(request()->segment(2)) --}}
+            <li class="{{ request()->is('*/user*') ? 'active':''}}">
                 <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">QL Thành Viên</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li class="{{url()->current() == route('admin.user_catalogue.index')?'active':''}}">
+                    <li class="{{request()->segment(2) == 'user-catalogue'?'active':''}}">
                         <a href="{{route('admin.user_catalogue.index')}}">QL Nhóm Thành Viên</a>
                     </li>
-                    <li class="{{url()->current() == route('admin.user.index')?'active':''}}">
+                    <li class="{{request()->segment(2) == 'user'?'active':''}}">
                         <a href="{{route('admin.user.index')}}">QL Thành Viên</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="{{ request()->is('*/post*') ? 'active':''}}">
+                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">QL Bài Viết</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li class="{{request()->segment(2) == 'post-catalogue'?'active':''}}">
+                        <a href="{{route('admin.user_catalogue.index')}}">QL Nhóm Bài Viết</a>
+                    </li>
+                    <li class="{{request()->segment(2) == 'post'?'active':''}}">
+                        <a href="{{route('admin.user.index')}}">QL Bài Viết</a>
                     </li>
                 </ul>
             </li>

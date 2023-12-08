@@ -17,10 +17,15 @@ use Illuminate\Support\Facades\Log;
 class UserCatalogueService implements UserCatalogueServiceInterface
 {
     protected $userCatalogueRepository;
+    protected $userService;
 
-    public function __construct(UserCatalogueRepository $userCatalogueRepository)
+    public function __construct(
+        UserCatalogueRepository $userCatalogueRepository,
+        UserService $userService
+    )
     {
         $this->userCatalogueRepository = $userCatalogueRepository;
+        $this->userService = $userService;
     }
 
     public function pagination($request)
@@ -32,13 +37,12 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         }
         $perPage = $request->integer('per_page');
         $column = $this->paginateSelect();
-        // dd($condition);
         $userCatalogues = $this->userCatalogueRepository->pagination(
             $column, 
             $condition, 
             [], //join
             ['path' => route('admin.user_catalogue.index')],
-            $perPage
+            $perPage,
         );
         return $userCatalogues;
     }
@@ -49,7 +53,6 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         try {
             $payLoad = $request->except(['_token', 'send']);
             $createUserCatalogue = $this->userCatalogueRepository->create($payLoad);
-            // dd($createUser);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -82,8 +85,10 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         try {
             $id = $post['id'];
             $payLoad[$post['field']] = (($post['value'] == 1)? 2 : 1);
-            // dd($payLoad);
+            // dd($post);
             $updateStatus = $this->userCatalogueRepository->update($id, $payLoad);
+            
+            $this->updateStatusUserDependUserCatalogue($post);
             
             DB::commit();
             return true;
@@ -94,14 +99,25 @@ class UserCatalogueService implements UserCatalogueServiceInterface
             return false;
         }
     }
-    public function updateStatusAll($id=[], $post=[])
+    private function updateStatusUserDependUserCatalogue($post)
+    {
+        $post['column'] = 'user_catalogue_id';
+        if (!is_array($post['id'])) {
+            $post['id'] = str_split($post['id']);
+            $post['value'] = (($post['value'] == 1)? 2 : 1);
+        }
+        return $this->userService->updateStatusAll($post);
+    }
+
+    public function updateStatusAll($post=[])
     {
         DB::beginTransaction();
         try {
-            $id = $post['id'];
             $payLoad[$post['field']] = $post['value'];
+            // dd($post);
             $updateStatusAll = $this->userCatalogueRepository->updateByWhereIn('id', $post['id'], $payLoad);
-            // dd($updateStatusAll);
+            $this->updateStatusUserDependUserCatalogue($post);
+
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -111,6 +127,7 @@ class UserCatalogueService implements UserCatalogueServiceInterface
             return false;
         }
     }
+    
 
     public function delete($id)
     {
@@ -127,10 +144,28 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         }
     }
 
+    public function deleteChecked($id=[])
+    {
+        DB::beginTransaction();
+        try {
+            // dd($id);
+            $deleteUser = $this->userCatalogueRepository->deleteChecked($id);
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Log::error($e->getMessage());
+            echo $e->getMessage();die();
+            return false;
+        }
+    }
+
+
     private function paginateSelect()
     {
         return ['id', 'name', 'image', 'publish'];
     }
 
+    
 
 }

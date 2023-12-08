@@ -23,6 +23,7 @@ class UserCatalogueController extends Controller
     public function index(Request $request)
     {
         $userCatalogues = $this->userCatalogueService->pagination($request);
+        // dd($userCatalogues->users);
         return view('admin.userCatalogue.index', compact(
             'userCatalogues',
         ));

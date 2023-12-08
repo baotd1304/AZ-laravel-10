@@ -36,11 +36,12 @@ class UserService implements UserServiceInterface
         // dd($condition);
         $users = $this->userRepository->pagination(
             $column, 
-            $condition, 
+            $condition,
             [], //join
             ['path' => route('admin.user.index')],
-            $perPage
+            $perPage,
         );
+        // dd($users->name);
         return $users;
     }
 
@@ -100,14 +101,31 @@ class UserService implements UserServiceInterface
             return false;
         }
     }
-    public function updateStatusAll($id=[], $post=[])
+    public function updateStatusAll($post=[])
     {
         DB::beginTransaction();
         try {
-            $id = $post['id'];
+            $column = $post['column'];
             $payLoad[$post['field']] = $post['value'];
-            $updateStatusAll = $this->userRepository->updateByWhereIn('id', $post['id'], $payLoad);
+            $updateStatusAll = $this->userRepository->updateByWhereIn($column, $post['id'], $payLoad);
             // dd($updateStatusAll);
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Log::error($e->getMessage());
+            echo $e->getMessage();die();
+            return false;
+        }
+    }
+
+    public function changeFieldSelect($post=[])
+    {
+        DB::beginTransaction();
+        try {
+            $payLoad[$post['field']] = $post['value'];
+            $updateStatus = $this->userRepository->update($post['id'], $payLoad);
+            
             DB::commit();
             return true;
         } catch (\Exception $e) {

@@ -28,11 +28,11 @@ class AjaxController extends Controller
     {
         $post = $request -> input();
         $serviceInterfaceNamespace = 'App\Services\\' . ucfirst($post['model']) . 'Service';
-        // dd($post);
+        // dd($serviceInterfaceNamespace);
         if (class_exists($serviceInterfaceNamespace)){
             $serviceInstance = app($serviceInterfaceNamespace);
         };
-        $result = $serviceInstance->updateStatusAll($post['id'], $post);
+        $result = $serviceInstance->updateStatusAll($post);
         return response()->json([
             'result' => $result,
             'message' => 'Cập nhật trạng thái '.count($post['id']).' bản ghi thành công'
@@ -50,6 +50,21 @@ class AjaxController extends Controller
         return response()->json([
             'result' => $result,
             'message' => 'Xóa '.count($post['id']).' bản ghi đã chọn thành công'
+        ]);
+    }
+
+    public function changeFieldSelect(Request $request)
+    {
+        $post = $request -> input();
+        // dd($post);
+        $serviceInterfaceNamespace = 'App\Services\\' . ucfirst($post['model']) . 'Service';
+        if (class_exists($serviceInterfaceNamespace)){
+            $serviceInstance = app($serviceInterfaceNamespace);
+        };
+        $result = $serviceInstance->changeFieldSelect($post);
+        return response()->json([
+            'result' => $result,
+            'message' => 'Cập nhật thông tin mã ID: '.$post['id'].' thành công'
         ]);
     }
 

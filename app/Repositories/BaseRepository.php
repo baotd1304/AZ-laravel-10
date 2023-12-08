@@ -20,16 +20,17 @@ class BaseRepository implements BaseRepositoryInterface
     }
     public function pagination(
         $column=['*'], $condition=[],
-        $join=[], $extend=[], $perPage=0
+        $join=[], $extend=[], $perPage=1,
     ){
+        
         $query = $this->model->select($column)
             ->where(function($que) use ($condition){
-                if (isset($condition['publish'])) {
+                if (isset($condition['publish']) && !empty($condition['publish'])) {
                     $que->Where('publish', '=', $condition['publish']);
                 };
             })
             ->where(function($que) use ($condition){
-                if (isset($condition['user_catalogue_id'])) {
+                if (isset($condition['user_catalogue_id']) && !empty($condition['user_catalogue_id']) ) {
                     $que->Where('user_catalogue_id', '=', $condition['user_catalogue_id']);
                 };
             })

@@ -6,11 +6,11 @@
         name2="Thành viên"
         name3="{{(isset($user)?'Cập nhật':'Thêm')}} thành viên"
         route1="{{route('admin.dashboard')}}"
-        route2="{{route('admin.user.index')}}"
-        route3="{{(isset($user)? route('admin.user.edit', $user->id) : route('admin.user.create'))}}"
+        route2="{{route('admin.users.index')}}"
+        route3="{{(isset($user)? route('admin.users.edit', $user->id) : route('admin.users.create'))}}"
     />
     @php
-        $url =(isset($user)? route('admin.user.update', $user->id) : route('admin.user.store'));
+        $url =(isset($user)? route('admin.users.update', $user->id) : route('admin.users.store'));
     @endphp
     <form action="{{$url}}" method="post" class="box">
         @csrf
@@ -121,9 +121,10 @@
                                     <div class="form-row">
                                         <label for="" class="control-label text-left">Ảnh dại diện
                                         </label>
-                                        {{-- <input type="text" name="image" 
+                                        <input type="text" name="image" 
                                         value="{{old('image', ($user->image)??'')}}" 
-                                        class="form-control input-image" data-upload="Images" autocomplete="off"> --}}
+                                        class="form-control upload-image" data-type="Images" autocomplete="off">
+                                        <img src="{{asset($user->image??'')}}" alt="" width="100px">
                                     </div>
                                 </div>
                             </div>

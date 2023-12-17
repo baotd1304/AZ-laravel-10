@@ -21,6 +21,7 @@ class BaseRepository implements BaseRepositoryInterface
     public function pagination(
         $column=['*'], $condition=[],
         $join=[], $extend=[], $perPage=1,
+        $relation=[],
     ){
         
         $query = $this->model->select($column)
@@ -39,10 +40,16 @@ class BaseRepository implements BaseRepositoryInterface
                     if (isset($column)){
                         foreach ($column as $key => $field){ //lap qua cac field da chon tu ham` paginateSelect o UserService
                             $que->orWhere($field, 'LIKE', '%'.$condition['keyword'].'%');
+                            // $que->orWhereraw('BINARY '.$field.' LIKE ?', ['%'.$condition['keyword'].'%']);
                         };
                     }
                 };
             });
+        if (!empty($relation)){
+            foreach ($relation as $rela){
+                $query->with($rela);
+            }
+        }
         if (!empty($join)){
             $query->join(...$join);
         }

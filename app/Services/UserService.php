@@ -33,15 +33,14 @@ class UserService implements UserServiceInterface
         }
         $perPage = $request->integer('per_page');
         $column = $this->paginateSelect();
-        // dd($condition);
         $users = $this->userRepository->pagination(
             $column, 
             $condition,
             [], //join
-            ['path' => route('admin.user.index')],
+            ['path' => route('admin.users.index')],
             $perPage,
+            ['userCatalogue']
         );
-        // dd($users->name);
         return $users;
     }
 
@@ -62,6 +61,10 @@ class UserService implements UserServiceInterface
             echo $e->getMessage();die();
             return false;
         }
+    }
+    public function edit($id)
+    {
+        return $this->userRepository->findById($id);
     }
 
     public function update($id, $request)

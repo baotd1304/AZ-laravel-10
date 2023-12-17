@@ -1,18 +1,13 @@
 @extends('admin.component.layout')
 
-@push('customCSS')
-<link rel="stylesheet" href="{{asset('admin/css/plugins/switchery/switchery.css')}}">
-@endpush
-
-
 @section('content')
 
     <x-admin.breadcrumb title="Quản lý thành viên"
         name2="Thành viên"
         name3="Danh sách"
-        route1="admin.dashboard"
-        route2="admin.user.index"
-        route3="admin.user.index"
+        route1="{{route('admin.dashboard')}}"
+        route2="{{route('admin.users.index')}}"
+        route3="{{route('admin.users.index')}}"
         />
     {{-- <div class="wrapper wrapper-content"> --}}
         
@@ -25,7 +20,7 @@
                         
                         <div class="ibox-content">
                             {{-- Filter wrapper --}}
-                            <x-admin.filter-wrapper :userCatalogues="$userCatalogues" route="user"/>
+                            <x-admin.filter-wrapper :userCatalogues="$userCatalogues" route="users"/>
                             {{-- End filter wrapper --}}
                             {{ $users->links('pagination::customize-view')}}
 
@@ -74,7 +69,7 @@
                                                 {{$user->publish==1? 'checked':''}}>
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{route('admin.user.edit', $user->id)}}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                                                <a href="{{route('admin.users.edit', $user->id)}}" class="btn btn-success"><i class="fa fa-edit"></i></a>
                                                 <button data-toggle="modal" data-target="#confirmDeleteModal{{$user->id}}"
                                                     data-id={{$user->id}}
                                                     class="btn btn-danger confirmDelete"><i class="fa fa-trash"></i></button>
@@ -104,7 +99,6 @@
 @push('customCSS')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css">
-
 
 @endpush
 

@@ -57,9 +57,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function user_catalogue()
+    public function userCatalogue()
     {
-        return $this->belongsTo(UserCatalogue::class, 'user_catalogue_id');
+        return $this->belongsTo(UserCatalogue::class);
+    }
+
+    public function postCatalogues()
+    {
+        return $this->hasMany(PostCatalogue::class);
+    }
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 
 }

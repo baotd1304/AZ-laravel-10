@@ -85,7 +85,7 @@ Examples:
 
 ATTENTION: The trailing slash is required.
 */
-$baseUrl = '/public/userfiles/';
+$baseUrl = '/uploadCkfinder/';
 
 
 
@@ -108,8 +108,8 @@ Examples:
 
 ATTENTION: The trailing slash is required.
 */
-$baseDir = str_replace('\\', '/', (dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/public/userfiles/'));
-
+// $baseDir = str_replace('\\', '/', (dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/userfiles/'));
+$baseDir = resolveUrl($baseUrl);
 
 
 

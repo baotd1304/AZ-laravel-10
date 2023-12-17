@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('canonical', 10)->unique();
             $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained();
+            $table->tinyInteger('publish')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -1,18 +1,13 @@
 @extends('admin.component.layout')
 
-@push('customCSS')
-<link rel="stylesheet" href="{{asset('admin/css/plugins/switchery/switchery.css')}}">
-@endpush
-
-
 @section('content')
 
     <x-admin.breadcrumb title="Quản lý nhóm thành viên"
         name2="Nhóm thành viên"
         name3="Danh sách"
-        route1="admin.dashboard"
-        route2="admin.userCatalogue.index"
-        route3="admin.userCatalogue.index"
+        route1="{{route('admin.dashboard')}}"
+        route2="{{route('admin.user_catalogues.index')}}"
+        route3="{{route('admin.user_catalogues.index')}}"
         />
     {{-- <div class="wrapper wrapper-content"> --}}
         
@@ -25,7 +20,7 @@
                         <div class="ibox-content">
                             {{-- Filter wrapper --}}
                             
-                            <x-admin.filter-wrapper route="user_catalogue"/>
+                            <x-admin.filter-wrapper route="user_catalogues"/>
                             {{-- End filter wrapper --}}
                             {{ $userCatalogues->links('pagination::customize-view')}}
 
@@ -64,7 +59,7 @@
                                                 {{$userCatalogue->publish==1? 'checked':''}}>
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{route('admin.user_catalogue.edit', $userCatalogue->id)}}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                                                <a href="{{route('admin.user_catalogues.edit', $userCatalogue->id)}}" class="btn btn-success"><i class="fa fa-edit"></i></a>
                                                 <button data-toggle="modal" data-target="#confirmDeleteModal{{$userCatalogue->id}}"
                                                     data-id={{$userCatalogue->id}}
                                                     class="btn btn-danger confirmDelete"><i class="fa fa-trash"></i></button>
@@ -94,7 +89,6 @@
 @push('customCSS')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css">
-
 
 @endpush
 

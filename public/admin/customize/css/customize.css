@@ -253,6 +253,9 @@ h5{
 .mb15{
   margin-bottom: 15px;
 }
+.mt15{
+  margin-top: 15px;
+}
 .box .ibox{
   box-shadow: 0 2px 4px rgb(0, 0, 0, .15);
 }
@@ -280,5 +283,43 @@ table .thCheckbox {
   width: 20px;
 }
 .checked-bg{
-  background-color: #e6f7ff !important; 
+  background-color: #e6f7ff !important;
 }
+
+.meta-title{
+  font-size: 20px;
+  color: #1a0dab;
+}
+.canonical{
+  color: green;
+  margin-bottom: 5px;
+}
+.meta-description{
+  font-size: 14px;
+}
+.notice{
+  font-size: 12px;
+  font-style: italic;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.upload-image{
+  cursor: pointer;
+}
+.input-wrapper{
+  position: relative;
+}
+.input-wrapper .base-url{
+  position: absolute;
+  height: 34px;
+  line-height: 34px;
+  display: inline-block;
+  padding: 0px 10px;
+  top: 0px;
+  background: linear-gradient(to bottom, #fff, #f9fafb);
+  border-color: #e5e6e7 !important;
+  border: 1px solid;
+  border-right: 0;
+}
+

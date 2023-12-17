@@ -10,3 +10,10 @@
 {{-- Customize JS --}}
 <script src="{{ asset('admin/customize/js/customize.js')}}"></script>
 
+<!-- Custom and plugin javascript -->
+<script src="{{ asset('admin/js/inspinia.js') }}"></script>
+<script src="{{ asset('admin/js/plugins/pace/pace.min.js') }}"></script>
+
+
+
+

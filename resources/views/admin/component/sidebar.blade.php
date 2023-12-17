@@ -30,33 +30,54 @@
                 </div>
             </li>
             <li class="{{url()->current() == route('admin.dashboard')?'active':''}}">
-                <a href="{{route('admin.dashboard')}}"><i class="fa fa-diamond"></i> <span class="nav-label">Dashboard</span></a>
+                <a href="{{route('admin.dashboard')}}"><i class="fa fa-diamond"></i>
+                    <span class="nav-label">Dashboard</span></a>
             </li>
-            {{-- @dd(request()->segment(2)) --}}
+
             <li class="{{ request()->is('*/user*') ? 'active':''}}">
-                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">QL Thành Viên</span> <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li class="{{request()->segment(2) == 'user-catalogue'?'active':''}}">
-                        <a href="{{route('admin.user_catalogue.index')}}">QL Nhóm Thành Viên</a>
+                <a href="#">
+                    <i class="fa fa-th-large"></i>
+                    <span class="nav-label">QL Thành Viên</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="{{request()->segment(2) == 'user-catalogues'?'active':''}}">
+                        <a href="{{route('admin.user_catalogues.index')}}">QL Nhóm Thành Viên</a>
                     </li>
-                    <li class="{{request()->segment(2) == 'user'?'active':''}}">
-                        <a href="{{route('admin.user.index')}}">QL Thành Viên</a>
+                    <li class="{{request()->segment(2) == 'users'?'active':''}}">
+                        <a href="{{route('admin.users.index')}}">QL Thành Viên</a>
                     </li>
                 </ul>
             </li>
+
             <li class="{{ request()->is('*/post*') ? 'active':''}}">
-                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">QL Bài Viết</span> <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li class="{{request()->segment(2) == 'post-catalogue'?'active':''}}">
-                        <a href="{{route('admin.user_catalogue.index')}}">QL Nhóm Bài Viết</a>
+                <a href="#"><i class="fa fa-th-large"></i>
+                    <span class="nav-label">QL Bài Viết</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="{{request()->segment(2) == 'post-catalogues'?'active':''}}">
+                        <a href="{{route('admin.post_catalogues.index')}}">QL Nhóm Bài Viết</a>
                     </li>
-                    <li class="{{request()->segment(2) == 'post'?'active':''}}">
-                        <a href="{{route('admin.user.index')}}">QL Bài Viết</a>
+                    <li class="{{request()->segment(2) == 'posts'?'active':''}}">
+                        <a href="{{route('admin.posts.index')}}">QL Bài Viết</a>
                     </li>
                 </ul>
             </li>
-            <li>
-                <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
+
+            <li class="{{ request()->is('*/languages*') ? 'active':''}}">
+                <a href="#"><i class="fa fa-bar-chart-o"></i>
+                    <span class="nav-label">QL Cấu Hình</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li class="{{request()->segment(2) == 'languages'?'active':''}}">
+                        <a href="{{route('admin.languages.index')}}">QL Ngôn Ngữ</a>
+                    </li>
+                    {{-- <li class="{{request()->segment(2) == 'post'?'active':''}}">
+                        <a href="{{route('admin.users.index')}}">QL Bài Viết</a>
+                    </li> --}}
+                </ul>
             </li>
             
         </ul>

@@ -27,6 +27,10 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         $this->userCatalogueRepository = $userCatalogueRepository;
         $this->userService = $userService;
     }
+    public function getAll()
+    {
+        return $this->userCatalogueRepository->getAll();
+    }
 
     public function pagination($request)
     {
@@ -41,8 +45,9 @@ class UserCatalogueService implements UserCatalogueServiceInterface
             $column, 
             $condition, 
             [], //join
-            ['path' => route('admin.user_catalogue.index')],
+            ['path' => route('admin.user_catalogues.index')],
             $perPage,
+            ['users']
         );
         return $userCatalogues;
     }
@@ -61,6 +66,11 @@ class UserCatalogueService implements UserCatalogueServiceInterface
             echo $e->getMessage();die();
             return false;
         }
+    }
+
+    public function edit ($id)
+    {
+        return $this->userCatalogueRepository->findById($id);
     }
 
     public function update($id, $request)

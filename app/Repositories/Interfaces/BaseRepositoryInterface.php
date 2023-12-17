@@ -14,6 +14,7 @@ interface BaseRepositoryInterface
     public function pagination(
         $column=['*'], $condition=[], 
         $join=[], $extend=[], $perPage,
+        $relation=[],
     );
 
 }

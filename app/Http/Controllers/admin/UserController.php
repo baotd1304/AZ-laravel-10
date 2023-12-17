@@ -5,35 +5,31 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\StoreUserRequest;
 use App\Http\Requests\admin\UpdateUserRequest;
-use App\Models\User;
+use App\Services\Interfaces\ProvinceServiceInterface as ProvinceService;
 use App\Services\Interfaces\UserServiceInterface as UserService;
-use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
-use App\Repositories\Interfaces\UserCatalogueRepositoryInterface as UserCatalogueRepository;
-use App\Repositories\Interfaces\ProvinceRepositoryInterface as ProvinceRepository;
+use App\Services\Interfaces\UserCatalogueServiceInterface as UserCatalogueService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     protected $userService;
-    protected $userRepository;
-    protected $userCatalogueRepository;
-    protected $provinceRepository;
+    protected $userCatalogueService;
+    protected $provinceService;
 
     public function __construct(
         UserService $userService,
-        UserRepository $userRepository,
-        UserCatalogueRepository $userCatalogueRepository,
-        ProvinceRepository $provinceRepository,
+        UserCatalogueService $userCatalogueService,
+        ProvinceService $provinceService,
     ){
         $this->userService = $userService;
-        $this->userRepository = $userRepository;
-        $this->userCatalogueRepository = $userCatalogueRepository;
-        $this->provinceRepository = $provinceRepository;
+        $this->userCatalogueService = $userCatalogueService;
+        $this->provinceService = $provinceService;
     }
     public function index(Request $request)
     {
         $users = $this->userService->pagination($request);
-        $userCatalogues = $this->userCatalogueRepository->getAll();
+        // dd($users);
+        $userCatalogues = $this->userCatalogueService->getAll();
         return view('admin.user.index', compact(
             'users',
             'userCatalogues'
@@ -42,8 +38,8 @@ class UserController extends Controller
     
     public function create()
     {
-        $provinces = $this->provinceRepository->getAll();
-        $userCatalogues = $this->userCatalogueRepository->getAll();
+        $provinces = $this->provinceService->getAll();
+        $userCatalogues = $this->userCatalogueService->getAll();
         return view('admin.user.store', compact(
             'provinces',
             'userCatalogues',
@@ -53,16 +49,16 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         if($this->userService->create($request)){
-            return redirect()->route('admin.user.index')->with('success', 'Thêm tài khoản mới thành công');
+            return redirect()->route('admin.users.index')->with('success', 'Thêm tài khoản mới thành công');
         }
-        return redirect()->route('admin.user.index')->with('error', 'Thêm tài khoản mới không thành công. Vui lòng thử lại');
+        return redirect()->route('admin.users.index')->with('error', 'Thêm tài khoản mới không thành công. Vui lòng thử lại');
     }
     
     public function edit($id)
     {
-        $provinces = $this->provinceRepository->getAll();
-        $userCatalogues = $this->userCatalogueRepository->getAll();
-        $user = $this->userRepository->findById($id);
+        $provinces = $this->provinceService->getAll();
+        $userCatalogues = $this->userCatalogueService->getAll();
+        $user = $this->userService->edit($id);
         // dd($user);
         return view('admin.user.store', compact(
             'provinces',
@@ -74,9 +70,9 @@ class UserController extends Controller
     public function update($id, UpdateUserRequest $request)
     {
         if($this->userService->update($id, $request)){
-            return redirect()->route('admin.user.index')->with('success', 'Cập nhật tài khoản ID: '.$id.' thành công');
+            return redirect()->route('admin.users.index')->with('success', 'Cập nhật tài khoản ID: '.$id.' thành công');
         }
-        return redirect()->route('admin.user.index')->with('error', 'Cập nhật tài khoản ID: '.$id.' không thành công. Vui lòng thử lại');
+        return redirect()->route('admin.users.index')->with('error', 'Cập nhật tài khoản ID: '.$id.' không thành công. Vui lòng thử lại');
     }
 
     public function destroy($id)

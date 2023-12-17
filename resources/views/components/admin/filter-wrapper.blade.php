@@ -1,4 +1,4 @@
-<form action="{{route('admin.user.index')}}">
+<form action="{{route('admin.'.$route.'.index')}}">
     <div class="filter-wrapper">
         <div class="uk-flex uk-flex-middle uk-flex-space-between">
             <div class="perPage">
@@ -7,7 +7,7 @@
                         @php
                             $perPage = request('per_page')?? old('per_page');
                         @endphp
-                        @for ($i = 15; $i<=200;$i+=15)
+                        @for ($i = 15; $i<100;$i+=15)
                             <option {{($perPage == $i)? 'selected':'' }} value="{{$i}}">{{$i}} bản ghi</option>
                         @endfor
                     </select>
@@ -31,15 +31,12 @@
                     <div class="uk-search uk-flex uk-flex-middle mr5">
                         <select name="publish" id="" class="form-control setupSelect2">
                             @php
-                                $publishs = [
-                                    'Bị khóa',
-                                    'Hoạt động',
-                                ];
                                 $publish = request('publish')?? old('publish');
                             @endphp
                                 <option {{($publish == '')? 'selected':'' }} value="">Chọn tình trạng</option>
-                                <option {{($publish == 1)? 'selected':'' }} value="1">Hoạt động</option>
-                                <option {{($publish == 2)? 'selected':'' }} value="2">Bị khóa</option>
+                            @foreach ($publishs as $value => $item)
+                                <option {{($publish == $value)? 'selected':'' }} value="{{$value}}">{{$item}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="uk-search uk-flex uk-flex-middle mr5">

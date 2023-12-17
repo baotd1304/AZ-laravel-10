@@ -6,11 +6,11 @@
         name2="Nhóm thành viên"
         name3="{{(isset($userCatalogue)?'Cập nhật':'Thêm')}} mới"
         route1="{{route('admin.dashboard')}}"
-        route2="{{route('admin.user_catalogue.index')}}"
-        route3="{{(isset($userCatalogue)? route('admin.user_catalogue.edit', $userCatalogue->id) : route('admin.user_catalogue.create'))}}"
+        route2="{{route('admin.user_catalogues.index')}}"
+        route3="{{(isset($userCatalogue)? route('admin.user_catalogues.edit', $userCatalogue->id) : route('admin.user_catalogues.create'))}}"
     />
     @php
-        $url =(isset($userCatalogue)? route('admin.user_catalogue.update', $userCatalogue->id) : route('admin.user_catalogue.store'));
+        $url =(isset($userCatalogue)? route('admin.user_catalogues.update', $userCatalogue->id) : route('admin.user_catalogues.store'));
     @endphp
     <form action="{{$url}}" method="post" class="box">
         @csrf
@@ -52,12 +52,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @php
-                                $publishs = [
-                                    '1' => 'Hiển thị',
-                                    '2' => 'Không hiển thị'
-                                ];
-                            @endphp
+                            
                             <div class="row mb15">
                                 <div class="col-lg-6">
                                     <div class="form-row">
@@ -82,9 +77,9 @@
                                     <div class="form-row">
                                         <label for="" class="control-label text-left">Ảnh dại diện
                                         </label>
-                                        {{-- <input type="text" name="image" 
+                                        <input type="text" name="image" 
                                         value="{{old('image', ($userCatalogue->image)??'')}}" 
-                                        class="form-control input-image" data-upload="Images" autocomplete="off"> --}}
+                                        class="form-control upload-image" data-type="Images" autocomplete="off">
                                     </div>
                                 </div>
                             </div>

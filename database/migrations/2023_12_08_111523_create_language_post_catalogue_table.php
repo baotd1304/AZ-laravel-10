@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('post_catalogue_id')->constrained();
             $table->foreignId('language_id')->constrained();
             $table->string('name');
+            $table->string('canonical')->unique();
             $table->text('description')->nullable();
             $table->longText('content')->nullable();
             $table->string('meta_title')->nullable();

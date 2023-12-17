@@ -2,32 +2,51 @@
     "use strict";
     var HT = {};
     
-    HT.inputImage = () => {
-        $('.input-image').click(function(){
-            let fileUpload = $(this).attr('data-upload')
-            HT.BrowseServeInput($(this), fileUpload);
+    HT.uploadImageToInput = () => {
+        $('.upload-image').click(function(){
+            let input = $(this)
+            let type = input.attr('data-type')
+            HT.setupCkFinder2(input, type);
         })
     }
 
-    HT.BrowseServeInput = (object, type) => {
+    HT.setupCkFinder2 = (object, type) => {
         if (typeof(type) == 'undefined'){
-            type == 'Images';
+            type = 'Images';
         }
         var finder = new CKFinder();
         finder.resourceType = type;
-
         finder.selectActionFunction = function(fileUrl, data){
-            // console.log(fileUrl)    
-            // fileUrl = fileUrl.replace(Base_URL, "/");
-            
             object.val(fileUrl)
+            if (object.siblings('input')){ //hien thi img va pass value vao input
+                object.find('img').attr('src', fileUrl)
+                object.siblings('input').val(fileUrl)
+            }
+            console.log(fileUrl)
         }
         finder.popup();
+    }
 
+    HT.setupCkeditor = () => {
+        if ($('.ck-editor')){
+            $('.ck-editor').each(function(){
+                let editor = $(this)
+                let elementId = editor.attr('id')
+                HT.ckeditor4(elementId)
+            })
+        }
+    }
+
+    HT.ckeditor4 = (elementId) => {
+        CKEDITOR.replace( elementId, {
+            language: 'vi',
+            height: 200,
+        });
     }
 
     $().ready(function(){
-        HT.inputImage();
+        HT.uploadImageToInput();
+        HT.setupCkeditor();
     });
 
 

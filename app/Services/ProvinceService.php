@@ -18,7 +18,6 @@ class ProvinceService implements ProvinceServiceInterface
     }
     public function getAll()
     {
-        $provinces = $this->provinceRepository->all();
-        return $provinces;
+        return $this->provinceRepository->getAll();
     }
 }
